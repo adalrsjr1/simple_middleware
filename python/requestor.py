@@ -27,7 +27,7 @@ def main():
 
     r = Requestor(m, c)
 
-    print r.invoke("localhost", 5000, "obj1", "method2", [1,2,3])[]
+    print r.invoke("localhost", 5000, "obj1", "method2", [1,2,3])
 
 if __name__ == "__main__":
     main()

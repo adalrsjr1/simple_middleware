@@ -28,8 +28,8 @@ class ClientRequestHandler:
 
 def main():
     port_num = 5000 
-    c = ClientRequestHandler('localhost',port_num)
-    c.connect()
+    c = ClientRequestHandler()
+    c.connect('127.0.0.1',port_num)
     c.send('hello world!')
 
 if __name__ == "__main__":
