@@ -5,6 +5,7 @@ from server import ServerRequestHandler
 class Invoker:
     localRep = {}
     def __init__(self, m):
+        print ">>> Invoker"
         self.marshaller = m
 
     def addServer(self, s):

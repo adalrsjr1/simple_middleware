@@ -7,6 +7,7 @@ from nameservice import IRef
 class Requestor:
 
     def __init__(self, m, c):
+        print ">>> Requestor"
         self.marshaller = m
         self.client = c
         self.ns = NameService()
