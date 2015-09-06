@@ -4,12 +4,17 @@ import sys
 
 class ServerRequestHandler:
 
-    def __init__(self, host, port):
+    def __init__(self, host, port, invoker):
+        self.lock = threading.Lock()
+
         self.host = host
         self.port = port
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.sock.bind((self.host, self.port))
+
+        self.invoker = invoker
+
 
     def listen(self):
         self.sock.listen(5)
@@ -29,8 +34,11 @@ class ServerRequestHandler:
             try:
                 data = client.recv(size)
                 if data:
-                    response = data
-                    print data
+                    #self.lock.acquire()
+                    print ">>> " + data
+                    response = self.invoker.forward(data)
+                    print "<<< " + response
+                    #self.lock.release()
                     client.send(response)
                 else:
                     raise error('Client disconnected')

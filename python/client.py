@@ -18,9 +18,12 @@ class ClientRequestHandler:
             amount_rec = 0
             amount_exp = len(message)
 
-            while amount_rec < amount_exp:
+            count = 0
+            while count <= 1024 and amount_rec < amount_exp :
                 data = self.sock.recv(1024)
                 amount_rec += len(data)
+                count += 1
+                #print "%d %d %d" % (amount_rec, amount_exp, count)
         finally:
             print >>sys.stderr, 'closing socket'
             self.sock.close()

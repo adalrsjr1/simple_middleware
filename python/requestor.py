@@ -1,15 +1,21 @@
 from client import ClientRequestHandler
 from marshaller import Marshaller
 from marshaller import Message
-
+from nameservice import NameService
+from nameservice import IRef
 
 class Requestor:
 
     def __init__(self, m, c):
         self.marshaller = m
         self.client = c
+        self.ns = NameService()
 
-    def invoke(self, host, port, obj, method, args):
+    def invoke(self, obj, method, args):
+        iRef = self.ns.lookupName(obj)[0]
+        return self.invokeByAddr(iRef.host, iRef.port, iRef.name, method, args)
+
+    def invokeByAddr(self, host, port, obj, method, args):
         msg = Message(obj, method, args)
 
         json = self.marshaller.encode(msg)
@@ -17,7 +23,7 @@ class Requestor:
         self.client.connect(host, port)
 
         response = self.client.send(json)
-
+        print response
         result = self.marshaller.decode(response)
         return result
 
@@ -27,7 +33,8 @@ def main():
 
     r = Requestor(m, c)
 
-    print r.invoke("localhost", 5000, "obj1", "method2", [1,2,3])
+    response = r.invoke("obj", "method2", [1,2,3])
+    print response.result
 
 if __name__ == "__main__":
     main()
