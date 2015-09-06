@@ -19,6 +19,7 @@ class ClientRequestHandler:
             amount_exp = len(message)
 
             count = 0
+            
             while count <= 1024 and amount_rec < amount_exp :
                 data = self.sock.recv(1024)
                 amount_rec += len(data)
