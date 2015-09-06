@@ -34,11 +34,9 @@ class ServerRequestHandler:
             try:
                 data = client.recv(size)
                 if data:
-                    #self.lock.acquire()
-                    print ">>> " + data
+                    self.lock.acquire()
                     response = self.invoker.forward(data)
-                    print "<<< " + response
-                    #self.lock.release()
+                    self.lock.release()
                     client.send(response)
                 else:
                     raise error('Client disconnected')

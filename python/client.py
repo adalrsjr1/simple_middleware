@@ -1,8 +1,10 @@
 import socket
 import threading
 import sys
+from pprint import pprint
 
 class ClientRequestHandler:
+    _BUFF_SIZE = 1024
 
     def __init__(self):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -16,18 +18,14 @@ class ClientRequestHandler:
             self.sock.sendall(message)
 
             amount_rec = 0
-            amount_exp = len(message)
-
-            count = 0
-            
-            while count <= 1024 and amount_rec < amount_exp :
-                data = self.sock.recv(1024)
+            data = ''
+            while data[-1:] != '}' or amount_rec < self._BUFF_SIZE :
+                data += self.sock.recv(self._BUFF_SIZE)
                 amount_rec += len(data)
-                count += 1
-                #print "%d %d %d" % (amount_rec, amount_exp, count)
         finally:
             print >>sys.stderr, 'closing socket'
             self.sock.close()
+
         return data
 
 def main():

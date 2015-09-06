@@ -23,7 +23,7 @@ class Requestor:
         self.client.connect(host, port)
 
         response = self.client.send(json)
-        print response
+
         result = self.marshaller.decode(response)
         return result
 

@@ -15,11 +15,9 @@ class Marshaller():
             return json.dumps({"target_obj":obj.target_obj, "target_method":obj.method, "args":obj.args, "result":obj.result})
         return json.JSONEncoder.default(self, obj)
 
-    def decode(self, obj):    
-        print "decode::: "+ obj
+    def decode(self, obj):   
         msg = json.loads(obj)
         n_msg = Message(msg['target_obj'], msg['target_method'], msg['args'], msg['result'])
-
         return n_msg
     
 

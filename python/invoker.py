@@ -26,20 +26,22 @@ class Invoker:
         self.__register(id, obj)      
 
     def forward(self, message):
-        msg = self.marshaller.decode(message)
-        msg.target_obj = None
-        msg.method = None
-        msg.args = None
-        msg.result = None
+        in_msg = self.marshaller.decode(message)
+
+        to_json = Message(None, None, None, 42)
+
+        out_msg = self.marshaller.encode(to_json)
+
         #obj = localRep[msg.target_obj]
 
         #result = getattr(obj, message.method, message.args)
         
+        #print "msg:: " + msg
         
-        json = self.marshaller.encode(msg)
-        print "json::: " + json
+        #json = self.marshaller.encode(msg)
+        #print "json::: " + json
         
-        return json
+        return out_msg
 
 def main():
     
