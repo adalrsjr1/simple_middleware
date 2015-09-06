@@ -1,6 +1,7 @@
 from marshaller import Marshaller
 from marshaller import Message
 from server import ServerRequestHandler
+from remotes import *
 
 class Invoker:
     localRep = {}
@@ -10,38 +11,29 @@ class Invoker:
 
     def addServer(self, s):
         self.server = s;
-        s.listen()
+        self.server.listen()
 
     def register(self, id, name, obj):
-        __registerObj(name, obj)
-        __registerIdObj(id, obj)
+        self.__inner_register(name, obj)
+        self.__inner_register(id, obj)
 
     def __inner_register(self, key, value):
-        if not localRep.has_hey(key):
-            localRep[key] = value
-
-    def __registerObj(self, name, obj):
-        self.__register(name, obj)
-
-    def __registerIdObj(self, id, obj):
-        self.__register(id, obj)      
+        if not key in self.localRep:
+            self.localRep[key] = value
 
     def forward(self, message):
         in_msg = self.marshaller.decode(message)
 
-        to_json = Message(None, None, None, 42)
-
+        obj = self.localRep[in_msg.target_obj]        
+        args = in_msg.args
+        method = in_msg.method
+        
+        result = getattr(obj, (method))(*args)
+        
+        to_json = Message(None, None, None, result)
         out_msg = self.marshaller.encode(to_json)
+   
 
-        #obj = localRep[msg.target_obj]
-
-        #result = getattr(obj, message.method, message.args)
-        
-        #print "msg:: " + msg
-        
-        #json = self.marshaller.encode(msg)
-        #print "json::: " + json
-        
         return out_msg
 
 def main():

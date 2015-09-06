@@ -16,6 +16,9 @@ from pprint import pprint
 class Capsule:
 
     def __init__(self, host, port):
+
+        self.ns = NameService()
+
         self.marshaller_client = Marshaller()
         self.c = ClientRequestHandler()
         self.requestor = Requestor(self.marshaller_client, self.c)
@@ -26,13 +29,17 @@ class Capsule:
 
         self.server.start()            
 
+    def resetNS(self):
+        self.ns.reset()
+
     def createServer(self, host, port):
         self.marshaller_server = Marshaller()
         self.invoker = Invoker(self.marshaller_server)
         self.s = ServerRequestHandler(host, port, self.invoker)
         self.invoker.addServer(self.s);
 
-    def registerRemoteObject(self, id, name, obj):
+    def registerRemoteObject(self, id, name, obj, host, port):
+        self.ns.register(id, name, host, port)
         self.invoker.register(id, name, obj)
 
     def invoke(self, obj, method, args):
