@@ -1,9 +1,9 @@
-'''
-ID
-NAME
-HOST
-PORT
-'''
+# the name service must has a table in a database as follow
+# OBJ_ID VARCHAR(45)
+# NAME VARCHAR(45)
+# HOST VARCAHR(15)
+# PORT INT
+
 import MySQLdb
 import uuid
 
