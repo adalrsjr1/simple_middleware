@@ -5,5 +5,3 @@ This repository intends to maintain a collection of object oriented middleware s
 
 ![alt tag](https://raw.github.com/adalrsjr1/simple_middleware/master/docs/architecture.png)
 
-Until now the implementations are in these languages:
-* Python
